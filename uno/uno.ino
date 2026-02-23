@@ -22,7 +22,7 @@ Adafruit_Fingerprint fingerSensor(&fingerprintSerial);
 #define LED_PWM_PIN 5
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
 
   pinMode(LED_PWM_PIN, OUTPUT);
   pinMode(BUZZER_PIN, OUTPUT);
@@ -86,11 +86,12 @@ void loop() {
     }
 
     if (Serial.available() > 0) {
-      int c = Serial.read();
+      String str = Serial.readStringUntil('\n');
+      Serial.println(str);
 
-      if (c == '*') {
+      if (str.equalsIgnoreCase("*\r")) {
         currentProcess = 1;
-      } else if (c == '#') {
+      } else if (str.equalsIgnoreCase("#\r")) {
         currentProcess = 2;
       }
     }
@@ -106,8 +107,8 @@ void loop() {
       tone(BUZZER_PIN, 200);
     }
 
-    int potIn = analogRead(POT_DATA_PIN) / 4;
-    analogWrite(LED_PWM_PIN, potIn);
+    int ledBrightness = analogRead(POT_DATA_PIN) / 4;
+    analogWrite(LED_PWM_PIN, ledBrightness);
 
     if (millis() - alarmTime >= 200) {
       reset();
@@ -197,11 +198,15 @@ void stepFingerprintEnrollProcess() {
   if (enrollStep == 5) {
     lcd.print("Saving model");
 
+    // TODO: don't hardcode as ID 1
     uint8_t status = fingerSensor.storeModel(1);
     if (status != FINGERPRINT_OK) {
       abortFingerprintProcess(status);
       return;
     }
+
+    Serial.println("req:new_fingerprint");
+    Serial.flush();
 
     reset();
     lcd.print("Done!");

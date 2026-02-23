@@ -32,9 +32,11 @@
 					<td>{fingerprint.id}</td>
 					<td>{new Date(fingerprint.registerTimestamp)}</td>
 					<td>
-						<button class="button preset-tonal-error">
+						<!--
+						<button class="btn preset-tonal-error">
 							<Trash />
 						</button>
+						-->
 					</td>
 				</tr>
 			{/each}

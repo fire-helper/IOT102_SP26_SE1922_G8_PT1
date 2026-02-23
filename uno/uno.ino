@@ -14,7 +14,6 @@ byte colPins[4] = { 9, 8, 7, 6 };
 
 Keypad keypad(makeKeymap(hexaKeys), rowPins, colPins, 4, 4);
 SoftwareSerial fingerprintSerial(2, 3);
-SoftwareSerial esp(0, 1);
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 Adafruit_Fingerprint fingerSensor(&fingerprintSerial);
 
@@ -23,8 +22,7 @@ Adafruit_Fingerprint fingerSensor(&fingerprintSerial);
 #define LED_PWM_PIN 5
 
 void setup() {
-  Serial.begin(9600);
-  esp.begin(9600);
+  Serial.begin(115200);
 
   pinMode(LED_PWM_PIN, OUTPUT);
   pinMode(BUZZER_PIN, OUTPUT);
@@ -85,6 +83,16 @@ void loop() {
       currentProcess = 1;
     } else if (key == '#') {
       currentProcess = 2;
+    }
+
+    if (Serial.available() > 0) {
+      int c = Serial.read();
+
+      if (c == '*') {
+        currentProcess = 1;
+      } else if (c == '#') {
+        currentProcess = 2;
+      }
     }
 
     return;

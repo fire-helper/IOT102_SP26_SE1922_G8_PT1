@@ -21,16 +21,6 @@
 						<Navigation.TriggerText>Home</Navigation.TriggerText>
 					</Navigation.TriggerAnchor>
 
-					<Navigation.TriggerAnchor href="/enroll">
-						<FingerprintPattern />
-						<Navigation.TriggerText>Enroll</Navigation.TriggerText>
-					</Navigation.TriggerAnchor>
-
-					<Navigation.TriggerAnchor href="/verify">
-						<ScanFace />
-						<Navigation.TriggerText>Verify</Navigation.TriggerText>
-					</Navigation.TriggerAnchor>
-
 					<Navigation.TriggerAnchor href="/log">
 						<ScrollTextIcon />
 						<Navigation.TriggerText>Logs</Navigation.TriggerText>
